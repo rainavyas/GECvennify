@@ -28,10 +28,10 @@ def get_sentences(data_path):
     ids = [l.rstrip('\n').split()[0] for l in lines]
     return ids, texts
 
-def correct(model, sentence):
+def correct(model, sentence, gen_args):
     correction_prefix = "grammar: "
     sentence = correction_prefix + sentence
-    result = model.generate_text(sentence)
+    result = model.generate_text(sentence, gen_args)
     return result.text
 
 if __name__ == "__main__":
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     
     # Load Model
     model = HappyTextToText("T5", "vennify/t5-base-grammar-correction")
-    args = TTSettings(num_beams=5, min_length=1)
+    gen_args = TTSettings(num_beams=5, min_length=1)
 
     # Load input sentences
     identifiers, sentences = get_sentences(args.IN)
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     corrections = []
     for i, sent in enumerate(sentences):
         print(f'On {i}/{len(sentences)}')
-        corrections.append(correct(model, sent))
+        corrections.append(correct(model, sent, gen_args))
     assert len(corrections) == len(identifiers), "Number of ids don't match number of predictions"
 
     # Save predictions
