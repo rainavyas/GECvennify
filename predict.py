@@ -20,6 +20,7 @@ import sys
 import os
 import argparse
 from happytransformer import HappyTextToText, TTSettings
+import torch
 
 def get_sentences(data_path):
     with open(data_path, 'r') as f:
@@ -48,8 +49,10 @@ if __name__ == "__main__":
     with open('CMDs/predict.cmd', 'a') as f:
         f.write(' '.join(sys.argv)+'\n') 
     
+    device = torch.device('cpu')
     # Load Model
     model = HappyTextToText("T5", "vennify/t5-base-grammar-correction")
+    model.device = torch.device('cpu')
     gen_args = TTSettings(num_beams=5, min_length=1)
 
     # Load input sentences
