@@ -1,5 +1,5 @@
 '''
-Generate model predictions using the Gramformer
+Generate model predictions
 
 Input file:
 ID1 Sentence1
